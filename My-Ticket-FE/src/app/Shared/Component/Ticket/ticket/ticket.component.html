@@ -1,0 +1,193 @@
+<div *ngIf="Ticket != null">
+    <h1>Ticket</h1>
+    <div class="col-md-3">
+        <hr>
+    </div>
+    <span class="row">
+        <a [routerLink]="['/']" style="margin-left: 20px;">home ></a>
+
+        <a class="mimic-link" (click)="GoToTicketList()">Ticket list</a>
+    </span>
+
+    <div class="row no-gutters">
+        <div class="col-md-8">
+            <!-- left container -->
+            <div class="left-container">
+                <form [formGroup]="ReplyForm" (ngSubmit)="onSubmit()">
+                    <input type="hidden" formControlName="TicketHeaderId">
+                    <div class="closed" *ngIf="Ticket.ClosedDate != null && Ticket.Status.Name == 'Closed'">
+                        <p>This ticket has been closed since {{Ticket.ClosedDate | date:'medium'}}</p>
+                    </div>
+                    <!-- Title -->
+                    <div>
+                        <h5>#{{Ticket.Id}} {{Ticket.Title}}</h5>
+                    </div>
+                    <!--  User info  and action button-->
+                    <div class="row">
+                        <div class="col-md-8">
+                            <span class="row">
+                                <img *ngIf="Ticket.Requester != null ; else ResponseByNullPP"
+                                    src="{{Ticket.Requester.PP}}" alt="Profil Picture"
+                                    style="height: 60px; width: 60px; border-radius: 50%;">
+                                <ng-template #ResponseByNullPP>
+                                    <img src="https://res.cloudinary.com/doifcljfo/image/upload/v1576531184/pnnisxxums62361a8vbt.png"
+                                        alt="Profil Picture" style="height: 60px; width: 60px; border-radius: 50%;">
+                                </ng-template>
+                                <p *ngIf="Ticket.Requester != null ; else ResponseByNullEmail" class="font-weight-bold"
+                                    style="padding:20px 0 0 25px;">{{Ticket.Requester.Email}}
+                                </p>
+                                <ng-template #ResponseByNullEmail>
+                                    <p class="font-weight-bold" style="padding:20px 0 0 25px;">{{Ticket.Email}}
+                                    </p>
+                                </ng-template>
+                                <p class="font-weight-light" style="padding:20px 0 0 25px; font-size: 14px;">
+                                    {{Ticket.CreationDate | date:'medium'}}
+                                </p>
+                            </span>
+                        </div>
+                        <div class="col-md-4" *ngIf="Ticket.Status.Name != 'Closed'">
+                            <span class="row d-flex justify-content-end">
+                                <button type="button" class="btn btn-left" placement="top" ngbTooltip="Reply"
+                                    (click)="Reply()">&#8624;</button>
+                                <button type="button" class="btn btn-right" placement="top"
+                                    ngbTooltip="Mark ticket as closed" (click)="Close()">&#x2713;</button>
+                            </span>
+                        </div>
+                    </div>
+                    <!-- Description of the ticket -->
+                    <div class="col-md-12 ticket-description">
+                        <div class="arrow-up"></div>
+                        <p [innerHTML]="Ticket.Description"></p>
+                    </div>
+                    <!-- Response of the ticket -->
+                    <div *ngFor="let tl of Ticket.TicketLines; let i = index">
+                        <div class="row response">
+                            <div class="col-md-8">
+                                <span class="row">
+                                    <img *ngIf="tl.ResponseBy != null ; else ResponseByNullPP"
+                                        src="{{tl.ResponseBy.PP}}" alt="Profil Picture"
+                                        style="height: 60px; width: 60px; border-radius: 50%;">
+                                    <ng-template #ResponseByNullPP>
+                                        <img src="https://res.cloudinary.com/doifcljfo/image/upload/v1576531184/pnnisxxums62361a8vbt.png"
+                                            alt="Profil Picture" style="height: 60px; width: 60px; border-radius: 50%;">
+                                    </ng-template>
+                                    <p *ngIf="tl.ResponseBy != null ; else ResponseByNullEmail" class="font-weight-bold"
+                                        style="padding:20px 0 0 25px;">{{tl.ResponseBy.Email}}
+                                    </p>
+                                    <ng-template #ResponseByNullEmail>
+                                        <p class="font-weight-bold" style="padding:20px 0 0 25px;">
+                                            {{tl.ResponseBy?.Email}}
+                                        </p>
+                                    </ng-template>
+                                    <p class="font-weight-light" style="padding:20px 0 0 25px; font-size: 14px;">
+                                        {{tl.ResponseDate | date:'medium'}}
+                                    </p>
+                                </span>
+                            </div>
+                        </div>
+                        <!-- Description of the ticket -->
+                        <div class="col-md-12 ticket-response">
+                            <div class="arrow-up"></div>
+                            <p [innerHTML]="tl.Content"></p>
+                        </div>
+                    </div>
+                    <div *ngIf="Ticket.ClosedDate != null" style="margin-bottom: 30px;"></div>
+
+                    <!-- make a response -->
+                    <div *ngIf="Ticket.ClosedDate == null && CurrentUser">
+                        <div>
+                            <div class="dropdown" *ngIf="CurrentUser?.StoredReply !== null && CurrentUserMemberOrAdmin">
+                                <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenu1"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"
+                                    style="width: 100%; text-align: left !important; margin-top: 20px;">
+                                    Stored reply
+                                    <span class="caret"></span>
+                                </button>
+                                <div class="dropdown-menu" style="width: 100%; max-height: 400px;
+                                overflow-y: auto;" aria-labelledby="dropdownMenu1">
+                                    <input (click)="Search($event)" [(ngModel)]="FilteredStoredReply"
+                                        [ngModelOptions]="{standalone: true}" class="form-control" type="search"
+                                        placeholder="search" id="example-search-input">
+                                    <table class="table table-condensed">
+                                        <tr>
+                                            <th style="width: 25%;">Title</th>
+                                            <th style="width: 75%;">Reply</th>
+                                        </tr>
+                                        <tr *ngFor="let reply of CurrentUser.StoredReply | filter:FilteredStoredReply:['Title']"
+                                            (click)="SelectStoredReply(reply)" style="cursor: pointer">
+                                            <td style="width: 25%;">{{reply.Title | slice:0:20}}</td>
+                                            <td style="width: 75%;" [innerHTML]="reply.Reply | slice:0:200"></td>
+                                        </tr>
+                                    </table>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="row response">
+                            <div class="col-md-8">
+                                <span class="row">
+                                    <img *ngIf="CurrentUser" src="{{CurrentUser.PP}}" alt="Profil Picture"
+                                        style="height: 60px; width: 60px; border-radius: 50%;">
+                                    <p class="font-weight-bold" style="padding:20px 0 0 25px;" id="scrollTo">
+                                        {{CurrentUser.Email}}</p>
+                                </span>
+                            </div>
+                        </div>
+                        <!-- input text area-->
+
+                        <div class="col-md-12 ticket-make-response">
+                            <div class="arrow-up-make-response"></div>
+                            <app-ngx-editor [config]="editorConfig" formControlName="Response"
+                                [placeholder]="'Enter text here...'" [spellcheck]="true">
+                            </app-ngx-editor>
+                            <button type="submit" class="btn btn-light" [disabled]="!ReplyForm.valid"
+                                style="margin-top: 15px;">Reply</button>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+
+        <!-- Right container -->
+        <div class="col-md-4 right-container">
+
+            <div class="container">
+                <!-- Satisfaction rating -->
+                <div *ngIf="!CurrentUserMemberOrAdmin && Ticket.Status != null && Ticket.Status.Name == 'Closed'">
+                    <div *ngIf="!Ticket.Satisfaction">
+                        <h5>Satisfaction rating</h5>
+                        <p>How could you rate your overall satisfaction for the resolution provided by our agents ?</p>
+                        <p> <span class="green-dot" (click)="SetSatisfaction(1)"></span> Extremly satisfied</p>
+                        <p> <span class="yellow-dot" (click)="SetSatisfaction(2)"></span> neither satisfied nor
+                            dissatisfied
+                        </p>
+                        <p> <span class="red-dot" (click)="SetSatisfaction(3)"></span> Extremly unsatisfied</p>
+                        <hr>
+                    </div>
+                </div>
+
+                <!-- Agent assigned -->
+
+                <div *ngIf="Ticket.Status != null && Ticket.Status.Name != 'Closed' && Ticket.AssignTO != null">
+                    <h5>Agent working on this ticket</h5>
+                    <span class="row">
+                        <img src="{{Ticket.AssignTO.PP}}" alt="Profil Picture"
+                            style="height: 60px; width: 60px; border-radius: 50%;">
+                        <p class="font-weight-bold" style="padding:20px 0 0 25px;">{{Ticket.AssignTO.LastName}}
+                            {{Ticket.AssignTO.FirstName}}
+                        </p>
+                    </span>
+                    <hr>
+                </div>
+
+                <!-- Ticket details -->
+                <h5>Ticket details</h5>
+                <h6>Status</h6>
+                <p *ngIf="Ticket.Status != null">{{Ticket.Status.Name}}</p>
+
+            </div>
+        </div>
+    </div>
+
+</div>

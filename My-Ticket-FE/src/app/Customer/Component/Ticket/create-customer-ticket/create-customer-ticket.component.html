@@ -1,0 +1,34 @@
+<h2>Ticket</h2>
+<hr>
+<h4 style="margin-bottom: 30px;">Create</h4>
+
+<form [formGroup]="ticketForm" (ngSubmit)="onSubmit()">
+    <a [routerLink]="['/Ticket']">Back to list</a>
+    <div *ngIf="error" class="alert alert-danger">
+        <p class="text text-danger" [innerHTML] ="errorMessage"></p>
+    </div>
+    <div class="form-group">
+        <label for="Title">Title</label>
+        <p *ngIf="ticketForm.controls.Title.touched && ticketForm.controls.Title.errors?.required" class="text-danger">
+            Required
+        </p>
+        <p *ngIf="ticketForm.controls.Title.touched && (ticketForm.controls.Title.errors?.minlength || ticketForm.controls.Title.errors?.maxlength)" class="text-danger">
+            The title must be between 3 an 50 characters
+        </p>
+        <input type="text" class="form-control" id="Title" aria-describedby="TitleHelp" placeholder="Enter a title"
+            formControlName="Title">
+    </div>
+    <div class="form-group">
+        <label for="Description">Description</label>
+        <p *ngIf="ticketForm.controls.Description.touched && ticketForm.controls.Description.errors?.required" class="text-danger">
+            Required
+        </p>
+        <p *ngIf="ticketForm.controls.Description.touched && ticketForm.controls.Description.errors?.minlength" class="text-danger">
+            The description must exceed 25 characters
+        </p>
+        <app-ngx-editor [config]="editorConfig" formControlName="Description" [placeholder]="'Enter text here...'"
+            [spellcheck]="true">
+        </app-ngx-editor>
+    </div>
+    <button class="btn btn-light" [disabled]="!ticketForm.valid">Create</button>
+</form>

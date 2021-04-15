@@ -1,0 +1,129 @@
+<!-- The app swipe element will show the step we want to access to
+this will go to the activePane at returning the step  -->
+<app-Swipe [activePane]="step == 1 ? 1 : step == 2 ? 2  : step > 2 ? 1 : 1">
+    <!-- Step 1 -->
+    <div Step1>
+        <div class="col-md-6 offset-md-3">
+            <h4>Create a new account.</h4>
+            <hr>
+            <form [formGroup]="signupForm" id="submit" (ngSubmit)="onSubmit()" class="form-horizontal">
+                <!-- Last name and firstname -->
+                <div class="form-group row no-gutter">
+                    <span class="text-danger"
+                        *ngIf="(signupForm.get('LastName').errors?.maxlength || signupForm.get('LastName').errors?.minlength)  && signupForm.get('LastName').touched">The
+                        last name should be between 3 and 20 letters<br>
+                    </span>
+                    <span class="text-danger" *ngIf="signupForm.get('LastName').errors?.nameIsForbidden">This last
+                        name is forbidden !
+                    </span>
+                    <span class="text-danger"
+                        *ngIf="(signupForm.get('FirstName').errors?.maxlength || signupForm.get('FirstName').errors?.minlength)  && signupForm.get('FirstName').touched">The
+                        first name name should be between 3 and 20 letters<br>
+                    </span>
+                    <span class="text-danger" *ngIf="signupForm.get('FirstName').errors?.nameIsForbidden">This
+                        first name is forbidden !
+                    </span>
+
+                    <div class="col-md-6">
+                        <div id="NameDiv" class="float-container form-group">
+                            <i class="fas fa-user fa-2x icon"></i>
+                            <label for="floatLastName">Last name</label>
+                            <input type="text" class="form-control" data-placeholder="Your last name"
+                                formControlName="LastName" required>
+                        </div>
+                    </div>
+                    <div id="FirstNameDiv" class="col-md-6">
+                        <div id="FirstName" class="float-container form-group">
+                            <label id="FirstnameLabel" for="floatFirstName">First name</label>
+                            <input id="FirstnameInput" type="text" class="form-control"
+                                data-placeholder="Your first name" formControlName="FirstName" required>
+                        </div>
+                    </div>
+                </div>
+                <!-- Email -->
+                <span class="text-danger"
+                    *ngIf="signupForm.get('Email').errors?.email  && signupForm.get('Email').touched">Please
+                    give a correct e-mail<br>
+                </span>
+                <span class="text-danger"
+                    *ngIf="signupForm.get('Email').errors?.EmailDomainIsForbidden && signupForm.get('Email').touched">This
+                    e-mail domain is forbidden
+                </span>
+                <span class="text-danger" id="email" *ngIf="emailExist">This e-mail already exist</span>
+
+                <div class="float-container form-group row no-gutter">
+                    <i class="fas fa-at fa-2x icon"></i>
+                    <label for="floatEmail">E-Mail</label>
+                    <input type="text" class="form-control" data-placeholder="YourEmail@domain.com"
+                        formControlName="Email" required>
+                </div>
+
+                <!-- Password -->
+                <span class="text-danger"
+                    *ngIf="signupForm.get('Password').touched && signupForm.get('Password').errors?.minlength">Your
+                    password is too weak
+                </span>
+                <password-strength-meter [password]="password"></password-strength-meter>
+                <div class="form-group row no-gutter">
+                    <div class="col-md-11 col-sm-11 col-11">
+                        <div class="float-container">
+                            <i class="fas fa-key fa-2x icon"></i>
+                            <label for="floatPassword">Password</label>
+                            <input id="PasswordInput" type="password" class="form-control"
+                                data-placeholder="Your password" [(ngModel)]="password" formControlName="Password"
+                                required>
+                        </div>
+                    </div>
+
+                    <div id="HideShowDiv" class="col-md-1 col-sm-1 col-1">
+                        <button id="HideShow" (click)="ShowHidePassword()"><i id="PasswordShowHideIcon"
+                                class="far fa-eye"></i></button>
+                    </div>
+                </div>
+                <!-- Confirm password -->
+                <span class="text-danger"
+                    *ngIf="signupForm.get('ConfirmPassword').touched && signupForm.get('ConfirmPassword').errors?.isError">The
+                    confirm password don't match with the password <br>
+                </span>
+
+                <div class="float-container form-group row no-gutter">
+                    <i class="fas fa-key fa-2x icon"></i>
+                    <label for="floatConfirm">Confirm your password</label>
+                    <input type="password" class="form-control" data-placeholder="Confirm your password"
+                        formControlName="ConfirmPassword" required>
+                </div>
+
+                <div class="form-group">
+                    <div class="row">
+                        <input id="SignUpButton" type="submit" class="btn btn-primary" [disabled]="!signupForm.valid"
+                            value="Sign-up">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div Step2>
+        <div class="col-md-6 offset-md-3">
+            <h4>E-mail confirmation</h4>
+            <hr>
+            <div class="row">
+                <span class="col-md-7">
+                    <label class="control-label" style="margin-top:20px" for="EnterCode">Enter the code you just receive
+                        by email</label>
+                </span>
+                <span class="col-md-3 col-12">
+                    <input class="form-control" id="userInputCode" type="text" maxlength="5"
+                        onkeyup="this.value = this.value.toUpperCase();" [(ngModel)]="userInputCode">
+                </span>
+                <div class="col-md-8 offset-md-9 col-12 offset-3"><button class="noBackground"
+                        (click)="SendCodeVerification()">Resend a code</button></div>
+                <span class="text-danger" id="codeMatch" *ngIf="!codeMatch">The code is incorrect.</span>
+            </div>
+            <div>
+                <button (click)="ValidateRegistration()" id="validateRegistration" type="submit"
+                    class="btn btn-primary">Validate registration
+                </button>
+            </div>
+        </div>
+    </div>
+</app-Swipe>

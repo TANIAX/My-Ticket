@@ -1,0 +1,77 @@
+<h2>My account</h2>
+<br>
+<div class="row">
+    <div class="col-md-4" *ngIf="user" style="background-color: #F1F1F1">
+        <h5>My Profile Settings</h5>
+        <div class="col-md-12">
+            <span>
+                <label>Name :</label>
+                {{user.LastName}} {{user.FirstName}}
+            </span>
+        </div>
+        <div class="col-md-12">
+            <span>
+                <label>E-mail :</label>
+                {{user.Email}}
+            </span>
+        </div>
+        <div class="col-md-12">
+            <span>
+                <label>Phone :</label>
+                {{user.PhoneNumber}}
+            </span>
+        </div>
+        <hr>
+        <div class="col-md-12">
+            <a [routerLink]="['/User/EditMyProfil']">Manage your account</a>
+        </div>
+        <hr>
+        <div class="col-md-12" *ngIf="!user.IsEmployee && (user.IsCompany && !currentUserIsMember)">
+            <a [routerLink]="['/Employee/List']">Manage my employees</a>
+        </div>
+    </div>
+    <!-- Right div -->
+    <div class="col-md-8" style="border: 1px solid #F1F1F1">
+        <div class="col-md-12" *ngIf="user">
+            <div class="form-group">
+                <img [src]="user.PP" alt="Profile Picture"
+                    style="border-radius: 10px; width:150px;height: 150px;box-shadow: 5px 5px 5px #535353;">
+                <br>
+                <label for="file_input_id" id="LabelFileInput">Add a picture</label>
+                <input type="file" id="file_input_id" placeholder="Upload file"
+                    (change)="fileChange($event)">
+                <!-- accept="image/*"> -->
+
+
+            </div>
+            <div style="margin-top: 30px;"></div>
+            <form [formGroup]="form" (ngSubmit)="onSubmit()" id="" class="form-horizontal">
+                <div class="form-group">
+                    <label class="col-md-3 control-label">Language</label>
+                    <div class="col-md-12">
+                        <select formControlName="Language" class="form-control">
+                            <option selected hidden>{{user.Language}}</option>
+                            <option value="French">French</option>
+                            <option value="English">English</option>
+                        </select>
+                    </div>
+                </div>
+            
+            <div style="margin-top: 30px;"></div>
+            <div class="form-group">
+                <label class="col-md-3 control-label">Signature</label>
+                <div class="col-md-12">
+                    <app-ngx-editor [config]="editorConfig" formControlName="Signature"
+                        [placeholder]="'Enter text here...'" [spellcheck]="true" [(ngModel)]="user.Signature">
+                    </app-ngx-editor>
+                </div>
+            </div>
+                <div class="form-group" id="submitButton">
+                    <input type="submit" class="btn btn-primary" value="Save change">
+                </div>
+        </form>
+        </div>
+
+        <div style="margin-top: 350px;"></div>
+    </div>
+</div>

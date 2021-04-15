@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!--
+    Xamarin.Forms Shell is a container to reduce the complexity of application development.
+    It is recommended to create a Shell application for navigation and performance improvements.
+    For more information about Shell, see https://developer.samsung.com/tizen/blog/en-us/2020/03/09/using-xamarinform-shell-on-galaxy-watch
+-->
+<Shell
+    x:Class="MyTicketWearable.AppShell"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:res="clr-namespace:MyTicketWearable.Resources"
+    xmlns:views="clr-namespace:MyTicketWearable.Views">
+    <FlyoutItem Route="GridLayout" Title="{x:Static res:AppResources.GridLayoutPageTitle}">
+        <ShellSection>
+            <ShellContent ContentTemplate="{DataTemplate views:GridLayoutPage}"/>
+        </ShellSection>
+    </FlyoutItem>
+    <FlyoutItem Route="TextList" Title="{x:Static res:AppResources.TextListPageTitle}">
+        <ShellSection>
+            <ShellContent ContentTemplate="{DataTemplate views:TextListPage}"/>
+        </ShellSection>
+    </FlyoutItem>
+    <FlyoutItem Route="Toast" Title="{x:Static res:AppResources.ToastPageTitle}">
+        <ShellSection>
+            <ShellContent ContentTemplate="{DataTemplate views:ToastPage}"/>
+        </ShellSection>
+    </FlyoutItem>
+    <FlyoutItem Route="Entry" Title="{x:Static res:AppResources.EntryPageTitle}">
+        <ShellSection>
+            <ShellContent ContentTemplate="{DataTemplate views:EntryPage}"/>
+        </ShellSection>
+    </FlyoutItem>
+    <FlyoutItem Route="ScrollView" Title="{x:Static res:AppResources.ScrollViewPageTitle}">
+        <ShellSection>
+            <ShellContent ContentTemplate="{DataTemplate views:ScrollViewPage}"/>
+        </ShellSection>
+    </FlyoutItem>
+</Shell>

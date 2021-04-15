@@ -1,0 +1,106 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="MyTicketWearable.Views.GridLayoutPage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:res="clr-namespace:MyTicketWearable.Resources">
+    <ContentPage.Content> 
+        <Grid
+            RowSpacing="2"
+            ColumnSpacing="2"
+            BackgroundColor="White">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <BoxView
+                Grid.ColumnSpan="2"
+                Color="Black" />
+            <Label
+                Grid.ColumnSpan="2"
+                Text="My Ticket"
+                FontSize="Header"
+                FontAttributes="Bold"
+                FontFamily="Roboto"
+                TextColor="#21D192"
+                HorizontalOptions="Center"
+                VerticalOptions="Center"
+                />
+            <BoxView
+                Grid.Row="1"
+                Color="Black" />
+            <StackLayout Spacing="0" Grid.Row="1">
+                <StackLayout.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="onTappedUnread" />
+                </StackLayout.GestureRecognizers>
+                <Label
+                    Text="Unread"
+                    FontSize="8"
+                    FontAttributes="Bold"
+                    FontFamily="Roboto"
+                    HorizontalOptions="CenterAndExpand"
+                    VerticalOptions="CenterAndExpand"
+                    />
+                <Label
+                    x:Name="UnreadNumber"
+                    Text="0"
+                    TextColor="#C70039"
+                    FontAttributes="Bold"
+                    FontFamily="Roboto"
+                    FontSize="15"
+                    HorizontalOptions="CenterAndExpand"
+                    VerticalOptions="CenterAndExpand"
+                    />
+            </StackLayout>
+            <BoxView
+                Grid.Row="1"
+                Grid.Column="1"
+                Color="Black" />
+            <StackLayout Spacing="0" Grid.Row="1" Grid.Column="1">
+                <StackLayout.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="onTappedOpen" />
+                </StackLayout.GestureRecognizers>
+                <Label
+                    Text="Open"
+                    FontSize="8"
+                    FontAttributes="Bold"
+                    FontFamily="Roboto"
+                    HorizontalOptions="CenterAndExpand"
+                    VerticalOptions="CenterAndExpand"
+                    />
+                <Label
+                    x:Name="OpenNumber"
+                    Text="0"
+                    TextColor="#C70039"
+                    FontAttributes="Bold"
+                    FontFamily="Roboto"
+                    FontSize="15"
+                    HorizontalOptions="CenterAndExpand"
+                    VerticalOptions="CenterAndExpand"
+                    />
+            </StackLayout>
+            <BoxView
+                Grid.Row="2"
+                Grid.ColumnSpan="2"
+                Color="Black" />
+            <StackLayout
+                Grid.Row="2"
+                Grid.ColumnSpan="2">
+                <Button
+                    BackgroundColor="#21D192" 
+                    Font="Roboto" 
+                    FontAttributes="Bold" 
+                    FontSize="Large" 
+                    HorizontalOptions="FillAndExpand"
+                    Text="Refresh" 
+                    Clicked="OnButtonRefreshClicked"
+                    />
+            </StackLayout>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

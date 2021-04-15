@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="MyTicketWearable.Views.TextListPage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+    <ContentPage.Content>
+        <StackLayout x:Name="stackLayout">
+             <ListView
+                x:Name="listView"
+                ItemSelected="OnItemSelected"
+                ItemTapped="OnItemTapped">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <TextCell Text="{Binding Title}"/>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <Label
+            x:Name="noTicketLabel"
+            IsVisible="false"
+            HorizontalOptions="CenterAndExpand"
+            VerticalOptions="CenterAndExpand"
+            Margin="0,0,0,0"
+            FontFamily="Roboto"
+            FontSize="Title"
+            FontAttributes="Bold"
+            Text="No ticket available"
+            BackgroundColor="#21D192"
+            TextColor="Black"
+            />
+        </StackLayout>
+        
+    </ContentPage.Content>
+</ContentPage>

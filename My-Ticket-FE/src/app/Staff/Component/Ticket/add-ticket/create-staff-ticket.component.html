@@ -1,0 +1,191 @@
+<h1>Create a ticket</h1>
+<div class="col-md-3">
+    <hr>
+</div>
+<form [formGroup]="ticketForm" (ngSubmit)="onSubmit()">
+    <div class="form-group" *ngIf="Project != null">
+        <label for="Project">Project</label>
+        <div *ngIf="ticketForm.controls.Project.touched && ticketForm.controls.Project.errors != null"
+            class="text-danger">Required</div>
+        <select formControlName="Project" class="form-control">
+            <option disabled [value]=0>Select project</option>
+            <option *ngFor="let p of Project" [value]="p.Id">{{p.Name}}</option>
+        </select>
+    </div>
+
+    <label for="Type">Type</label>
+    <div *ngIf="ticketForm.controls.Type.touched && ticketForm.controls.Type.errors != null" class="text-danger">
+        Required</div>
+    <div class="form-group" *ngIf="Priority != null">
+        <div class="custom-control custom-radio custom-control-inline" *ngFor="let t of Type">
+            <input type="radio" formControlName="Type" class="custom-control-input" id="'Type'+{{t.Id}}" name="Type"
+                [value]="t.Id">
+            <label class="custom-control-label" for="'Type'+{{t.Id}}" style="margin-left: 5px;">{{t.Name}}</label>
+        </div>
+    </div>
+
+    <div class="form-group" *ngIf="Priority != null">
+        <label for="Priority">Priority</label>
+        <div *ngIf="ticketForm.controls.Priority.touched && ticketForm.controls.Priority.errors != null">Required</div>
+        <select formControlName="Priority" class="form-control">
+            <option selected disabled [value]=0>Select priority</option>
+            <option *ngFor="let pr of Priority" [value]="pr.Id">{{pr.Name}}</option>
+        </select>
+    </div>
+
+    <label for="AssignTo">Assign to</label>
+    <div class="col-md-12 form-control" style="height: 40px;">
+        <label class="pull-right" for="sorting" tabindex="0" id="dropdownMember" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false" style="margin-left: 9px;">
+            <span>
+                <span *ngIf="groupSelected; else GroupSelectedNull">{{groupSelected.Name}}</span>
+                <ng-template #GroupSelectedNull>
+                    <span>...</span>
+                </ng-template>
+                <span> / </span>
+                <span
+                    *ngIf="memberSelected?.LastName && memberSelected?.FirstName; else MemberSelectedNull">{{memberSelected.LastName}}
+                    {{memberSelected.FirstName}}</span>
+                <ng-template #MemberSelectedNull>
+                    <span>...</span>
+                </ng-template>
+            </span>
+        </label>
+        <span class="dropdown-toggle right-absolute"></span>
+        <div class="dropdown-menu dropdown-menu-right text-left dropdown-group-member" aria-labelledby="dropdownMember">
+            <div class="selectMember container">
+                <div class="row dropdownHeader">
+                    <div class="col-md-6" (click)="GroupClick($event)">
+                        <h6 style="margin-left: 75px;" [ngClass]="{'zoom-font-dropdown':step==1}"
+                            class="zoom-font-dropdown col-md-6">GROUP</h6>
+                        <label *ngIf="groupSelected?.Name ; else GroupUnassigned" style="margin-left: 75px;"
+                            [ngClass]="{'zoom-font-dropdown':step==1}">{{groupSelected.Name}}</label>
+                        <ng-template #GroupUnassigned>
+                            <label style="margin-left: 75px;"
+                                [ngClass]="{'zoom-font-dropdown':step==1}">Unassigned</label>
+                        </ng-template>
+                    </div>
+                    <div class="col-md-6" (click)="AssignTOClick($event)">
+                        <h6 style="margin-left: 75px;" [ngClass]="{'zoom-font-dropdown':step==2}">MEMBER
+                        </h6>
+                        <label *ngIf="memberSelected?.LastName && memberSelected.FirstName ; else AssignTOUnassigned"
+                            style="margin-left: 60px;"
+                            [ngClass]="{'zoom-font-dropdown':step==2}">{{memberSelected.LastName}}
+                            {{memberSelected.FirstName}}</label>
+                        <ng-template #AssignTOUnassigned>
+                            <label style="margin-left: 60px;"
+                                [ngClass]="{'zoom-font-dropdown':step==2}">Unassigned</label>
+                        </ng-template>
+                    </div>
+                </div>
+                <!-- Search -->
+                <div class="row">
+                    <div class="input-group dropdown-search">
+                        <input (click)="Search($event)" [ngModelOptions]="{standalone: true}"
+                            [(ngModel)]="FilteredGroupOrMember" class="py-2 dropdown-search-input col-md-11"
+                            type="search" placeholder="search" id="example-search-input">
+                        <span class="input-group-append">
+                            <button (click)="ButtonSearch($event)" class=".dropdown-search-input-button" type="button"
+                                style="background: none;
+                                color: inherit;
+                                border: none;
+                                font: inherit;
+                                outline: inherit;">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <app-Swipe [activePane]="step == 1 ? 1 : step == 2 ? 2  : step > 2 ? 1 : 1" style="margin-top: 50px;">
+                <!-- Step 1 -->
+                <div Step1 style="max-height: 200px;
+            overflow-y: auto;">
+                    <a *ngFor="let group of Group | filter:FilteredGroupOrMember:['Name']" (click)="SelectGroup(group)"
+                        class="dropdown-item">{{group.Name}}
+                        {{group.NumberOfMember}}</a>
+                </div>
+                <div Step2>
+                    <a *ngFor="let user of AssignTO | filter:FilteredGroupOrMember:['LastName','FirstName']"
+                        (click)="SelectAssignTo(user)" class="dropdown-item">{{user.LastName}}
+                        {{user.FirstName}}</a>
+                </div>
+            </app-Swipe>
+            <!-- TODO NGFOR GROUPS OR MEMBER-->
+        </div>
+    </div>
+
+    <!-- <input type="text" formControlName="Requester" hidden> -->
+    <label for="RequesterAssignTo">Requester</label>
+    <div class="col-md-12 form-control" style="height: 40px;" *ngIf="Requester">
+        <label class="pull-right" for="sorting" tabindex="0" id="dropdownMember" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false" style="margin-left: 9px;">
+            <span *ngIf="requesterSelected?.LastName && requesterSelected.FirstName ; else requesterUnassigned">
+                {{requesterSelected.LastName}}
+                {{requesterSelected.FirstName}}
+            </span>
+            <ng-template #requesterUnassigned>
+                <span>
+                    Unassigned
+                </span>
+            </ng-template>
+        </label>
+        <span class="dropdown-toggle right-absolute"></span>
+        <div class="dropdown-menu dropdown-menu-right text-left dropdown-group-member" aria-labelledby="dropdownMember">
+
+            <div class="row">
+                <div class="input-group dropdown-search">
+                    <input (click)="Search($event)" [ngModelOptions]="{standalone: true}"
+                        [(ngModel)]="FilteredRequester" class="py-2 dropdown-search-input col-md-11" type="search"
+                        placeholder="search" id="example-search-input">
+                    <span class="input-group-append">
+                        <button (click)="ButtonSearch($event)" class=".dropdown-search-input-button" type="button"
+                            style="background: none;
+                                            color: inherit;
+                                            border: none;
+                                            font: inherit;
+                                            outline: inherit;">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </span>
+                </div>
+                <div style="max-height: 200px;
+            overflow-y: auto; margin-top: 50px; width: 100%; padding: 15px;">
+                    <a *ngFor="let user of Requester | filter:FilteredRequester:['LastName','FirstName','CompanyName']"
+                        (click)="SelectRequester(user)" class="dropdown-item">{{user.LastName}}
+                        {{user.FirstName}} {{user.CompanyName}}</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="Title">Title</label>
+        <div *ngIf="ticketForm.controls.Title.touched && ticketForm.controls.Title.errors?.required"
+            class="text-danger">Required</div>
+        <div *ngIf="ticketForm.controls.Title.touched && ticketForm.controls.Title.errors?.minlength"
+            class="text-danger">Lenght must be equals or highter then 5 characters </div>
+        <input type="text" formControlName="Title" class="form-control">
+    </div>
+
+    <div class="form-group no-gutters">
+        <label class="col-md-3 control-label">Description</label>
+        <div *ngIf="ticketForm.controls.Description.touched && ticketForm.controls.Description.errors?.required"
+            class="text-danger">Required</div>
+        <div *ngIf="ticketForm.controls.Description.touched && ticketForm.controls.Description.errors?.minlength"
+            class="text-danger">Lenght must be equals or highter then 25 characters </div>
+        <div class="col-md-12">
+            <app-ngx-editor [config]="editorConfig" formControlName="Description" [placeholder]="'Enter text here...'"
+                [spellcheck]="true">
+            </app-ngx-editor>
+        </div>
+    </div>
+
+    <div class="custom-control custom-switch">
+        <input type="checkbox" formControlName="CloseImmediatly" class="custom-control-input" id="CloseImmediatly">
+        <label class="custom-control-label" for="CloseImmediatly">Close immediatly</label>
+    </div>
+
+    <button type="submit" class="btn btn-light mx-auto" [disabled]="!ticketForm.valid">Create</button>
+    
+</form>

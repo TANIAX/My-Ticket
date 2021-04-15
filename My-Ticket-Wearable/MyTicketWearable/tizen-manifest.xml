@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<manifest
+    package="com.example.MyTicketWearable"
+    version="1.0.0"
+    api-version="4"
+    xmlns="http://tizen.org/ns/packages">
+    <profile name="wearable" />
+    <ui-application
+        appid="com.example.MyTicketWearable"
+        exec="MyTicketWearable.dll"
+        multiple="false"
+        nodisplay="false"
+        taskmanage="true"
+        type="dotnet"
+        launch_mode="single">
+        <label>MyTicketWearable</label>
+        <icon>MyTicketWearable.png</icon>
+        <metadata
+            key="http://tizen.org/metadata/prefer_dotnet_aot"
+            value="true" />
+        <splash-screens>
+          <splash-screen indicator-display="false" orientation="portrait" src="SplashScreen.png" type="img" />
+        </splash-screens>
+    </ui-application>
+    <privileges>
+        <privilege>http://tizen.org/privilege/notification</privilege>
+        <privilege>http://tizen.org/privilege/appmanager.launch</privilege>
+        <privilege>http://tizen.org/privilege/internet</privilege>
+        <privilege>http://tizen.org/privilege/network.get</privilege>
+        <privilege>http://tizen.org/privilege/mediastorage</privilege>
+        <privilege>http://tizen.org/privilege/haptic</privilege>
+        <privilege>http://tizen.org/privilege/display</privilege>
+    </privileges>
+    <shortcut-list />
+    <dependencies />
+    <provides-appdefined-privileges />
+</manifest>

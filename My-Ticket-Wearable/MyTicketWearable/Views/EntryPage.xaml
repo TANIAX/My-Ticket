@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="MyTicketWearable.Views.EntryPage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:res="clr-namespace:MyTicketWearable.Resources">
+    <ContentPage.Content>
+        <ScrollView Orientation="Vertical">
+            <StackLayout
+                Margin="50, 50, 40, 40"
+                Orientation="Vertical"
+                HorizontalOptions="FillAndExpand"
+                VerticalOptions="FillAndExpand">
+                
+                <Label
+                    Text="Config"
+                    HorizontalOptions="CenterAndExpand" />
+                <Entry
+                    x:Name="Email"
+                    Placeholder="Email"
+                    Text="Guillaume.cornez@gmail.com"
+                    ClearButtonVisibility="WhileEditing"
+                    BackgroundColor="#2c3e50"
+                    Keyboard="Email"
+                    ReturnType="Done" />
+                <Entry
+                    x:Name="Password"
+                    Text="Guillaume.cornez@gmail.com"
+                    Placeholder="{x:Static res:AppResources.Password}"
+                    IsPassword="True"
+                    ReturnType="Done"/>
+                <Entry
+                    x:Name="ApiUrl"
+                    Text="https://192.168.1.59/"
+                    BackgroundColor="#2c3e50"
+                    Keyboard="Url" 
+                    ReturnType="Done" />
+                <Button
+                    x:Name="BottomButton"
+                    BackgroundColor="#21D192" 
+                    Font="Roboto" 
+                    FontAttributes="Bold" 
+                    FontSize="Large" 
+                    HorizontalOptions="FillAndExpand"
+                    Text="Ok"
+                    Clicked="OnBottomButtonClicked"
+                     />
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

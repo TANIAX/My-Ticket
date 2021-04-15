@@ -1,0 +1,35 @@
+<button style="text-align: right;" (click)="onNoClick()" type="button" class="close" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+</button>
+<h1 mat-dialog-title>Employee</h1>
+<hr>
+  <ul>
+      <li>
+          <mat-form-field>
+              <input matInput [(ngModel)]="data.LastName" placeholder="Last name">
+          </mat-form-field>
+      </li>
+      <li>
+          <mat-form-field>
+              <input matInput [(ngModel)]="data.FirstName" placeholder="First name">
+          </mat-form-field>
+      </li>
+      <li>
+          <mat-form-field>
+              <input matInput [(ngModel)]="data.Email" placeholder="Email">
+          </mat-form-field>
+
+      </li>
+      <li>
+          <mat-form-field>
+              <input matInput [(ngModel)]="data.PhoneNumber" placeholder="Phone number">
+          </mat-form-field>
+      </li>
+      <li *ngIf="data.Id != '' ">
+            <label  (click)="ResetPassword()" for="" style="color: #007bff;
+            cursor: pointer;
+            font-size: 18px;"
+            >Reset password</label>
+      </li>
+  </ul>
+  <button (click)="onValidClick()" type="button" class="btn btn-primary col-md-12">Valid</button>

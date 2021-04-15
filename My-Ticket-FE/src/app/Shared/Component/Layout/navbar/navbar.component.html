@@ -1,0 +1,67 @@
+<nav id="navbar" class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container">
+    <a id="brand" class="navbar-brand" [routerLink]="['/Home']">My-Ticket</a>
+    <button class="navbar-toggler" type="button" (click)="IsCollapse = !IsCollapse" data-toggle="collapse"
+      data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false"
+      aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+      <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+        <li class="nav-item active">
+          <a *ngIf="isLogged" class="nav-link" [routerLink]="['/Staff/Dashboard']">
+            <h6>Home</h6><span class="sr-only">(current)</span>
+          </a>
+        </li>
+        <li class="nav-item active">
+          <a *ngIf="isLogged" class="nav-link" (click)="CreateTicket()">
+            <h6>Create a ticket</h6>
+          </a>
+        </li>
+      </ul>
+      <form class="form-inline my-2 my-lg-0">
+        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+          <li class="nav-item" *ngIf="!isLogged || isLogged == null">
+            <a class="nav-link" [routerLink]="['/User/SignUp']" id="SignUpLink">
+              <h6>Sign-up</h6>
+            </a>
+          </li>
+          <li class="nav-item" *ngIf="!isLogged || isLogged == null" style="border-left: solid  1px black">
+            <a class="nav-link" [routerLink]="['/User/Login']" id="loginLink">
+              <h6>Login</h6>
+            </a>
+          </li>
+          <!--  -->
+          <!-- Dropdown -->
+          <li class="nav-item dropdown" *ngIf="isLogged">
+            <a class="nav-link" href="#" id="navbardrop" data-toggle="dropdown">
+              <img src="{{PP}}" alt="Profil Picture" style="width: 35px; height: 35px;">
+            </a>
+            <div class="dropdown-menu dropdown-menu-right text-left">
+              <a class="dropdown-item" id="userInfo">
+                  <span>{{Lastname}} {{Firstname}}</span>
+                  <br>
+                  <span id="username">{{userName}}</span>
+              </a>
+              <a class="dropdown-item" [routerLink]="['/User/MyAccount']">
+                <h6>Profil settings</h6>
+              </a>
+              <a class="dropdown-item" [routerLink]="['/Ticket/MyTickets']">
+                <h6>My tickets</h6>
+              </a>
+              <a class="dropdown-item" (click)="Logout()" *ngIf="isLogged == true" [routerLink]="['/']">
+                <h6>Log-out</h6>
+              </a>
+            </div>
+          </li>
+          <!--  -->
+        </ul>
+      </form>
+    </div>
+  </div>
+</nav>
+<div *ngIf="isLoading"> 
+  <mat-progress-bar id="progressBar" mode="indeterminate"></mat-progress-bar>
+</div>
+<div style="height: 120px;"></div>

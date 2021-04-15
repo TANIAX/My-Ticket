@@ -1,0 +1,42 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <RootNamespace>CleanArchitecture.Infrastructure</RootNamespace>
+    <AssemblyName>CleanArchitecture.Infrastructure</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Persistence\Migrations\20200223124315_test5.cs" />
+    <Compile Remove="Persistence\Migrations\20200223124315_test5.Designer.cs" />
+    <Compile Remove="Persistence\Migrations\20200223124637_test5.cs" />
+    <Compile Remove="Persistence\Migrations\20200223124637_test5.Designer.cs" />
+    <Compile Remove="Persistence\Migrations\20200223124844_test5.cs" />
+    <Compile Remove="Persistence\Migrations\20200223124844_test5.Designer.cs" />
+    <Compile Remove="Persistence\Migrations\20200223125050_test5.cs" />
+    <Compile Remove="Persistence\Migrations\20200223125050_test5.Designer.cs" />
+    <Compile Remove="Persistence\Migrations\20200223125227_test5.cs" />
+    <Compile Remove="Persistence\Migrations\20200223125227_test5.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CloudinaryDotNet" Version="1.10.0" />
+    <PackageReference Include="MailKit" Version="2.5.1" />
+    <PackageReference Include="Microsoft.AspNetCore.ApiAuthorization.IdentityServer" Version="3.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.1" />
+    <PackageReference Include="CsvHelper" Version="12.2.2" />
+    <PackageReference Include="NSwag.Commands" Version="13.2.3" />
+    <PackageReference Include="System.Drawing.Common" Version="4.7.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Application\Application.csproj" />
+    <ProjectReference Include="..\SharedKernel\SharedKernel.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Mail\" />
+  </ItemGroup>
+
+</Project>

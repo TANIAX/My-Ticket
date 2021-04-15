@@ -1,0 +1,140 @@
+<h2 *ngIf="add"style="margin-bottom: 30px;">Create Customer</h2>
+<h2 *ngIf="!add"style="margin-bottom: 30px;">Edit Customer</h2>
+<!-- Error alert from backend -->
+<div class="alert alert-danger" *ngIf="error">
+    <span class="text text-danger" [innerHTML]="errorMessage">
+
+    </span>
+</div>
+<form [formGroup]="customerForm" id="submit" (ngSubmit)="onSubmit()">
+    <div class="row">
+        <!-- Left div -->
+         <div class="col-md-6">
+            <span class="row">
+                <i class="fas fa-user fa-2x icon" style="margin-left:30px;margin-right:15px;"></i>
+                <h5>Main</h5>
+            </span>
+
+            <hr>
+            <div class="float-container form-group">
+                <span *ngIf="customerForm.get('FirstName').errors?.nameIsForbidden">This first name is
+                    forbidden<br>
+                </span>
+                <span class="text-danger"
+                    *ngIf="(customerForm.get('FirstName').errors?.maxlength || customerForm.get('FirstName').errors?.minlength)  && customerForm.get('FirstName').touched">
+                    The first name should be between 3 and 20 letters<br>
+                </span>
+                <label for="floatFirsttName">First name</label>
+                <input type="text" class="form-control" data-placeholder="" formControlName="FirstName" required>
+            </div>
+        
+            <div class="float-container form-group">
+                <span class="text-danger" *ngIf="customerForm.get('LastName').errors?.nameIsForbidden">The last name is
+                    forbidden</span>
+                <span class="text-danger"
+                    *ngIf="(customerForm.get('LastName').errors?.maxlength || customerForm.get('LastName').errors?.minlength)  && customerForm.get('LastName').touched">
+                    The last name should be between 3 and 20 letters<br>
+                </span>
+                <label for="floatLastName">Last name</label>
+                <input type="text" class="form-control" data-placeholder="" formControlName="LastName" required>
+            </div>
+        
+            <div class="float-container form-group">
+                <span class="text-danger"
+                    *ngIf="(customerForm.get('Email').errors?.maxlength || customerForm.get('Email').errors?.minlength)  && customerForm.get('Email').touched">
+                    The Email should be between 4 and 255 letters<br>
+                </span>
+                <label for="floatEmail">Email</label>
+                <input type="text" class="form-control" id="email" data-placeholder="" formControlName="Email" required>
+            </div>
+
+            <div class="float-container form-group">
+                <span class="text-danger"
+                    *ngIf="customerForm.get('PhoneNumber').errors?.maxlength  && customerForm.get('PhoneNumber').touched">
+                    The phone number must not exceed 50 characters<br>
+                </span>
+                <label for="floatPhoneNumber">Phone number</label>
+                <input type="text" class="form-control" data-placeholder="" formControlName="PhoneNumber">
+            </div>
+
+            <div class="float-container form-group">
+                <span class="text-danger"
+                    *ngIf="customerForm.get('CompanyName').errors?.maxlength  && customerForm.get('CompanyName').touched">
+                    The company name must not exceed 50 characters<br>
+                </span>
+                <label for="floatCompanyName">Company name</label>
+                <input type="text" class="form-control"
+                    data-placeholder="" formControlName="CompanyName">
+            </div>
+
+            <div *ngIf="!add" class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input" formControlName="Exist"id="Exist">
+                <label class="custom-control-label" for="Exist">Exist</label>
+            </div>
+        </div> 
+        <!-- Right div -->
+
+         <div class="col-md-6">
+            <span class="row">
+                <i class="fas fa-2x fa-home" style="margin-left:30px;margin-right:15px;"></i>
+                <h5>Address</h5>
+            </span>
+            <hr>
+
+            <div class="float-container form-group">
+                <span class="text-danger"
+                    *ngIf="customerForm.get('Country').errors?.maxlength  && customerForm.get('Country').touched">
+                    The country must not exceed 50 characters<br>
+                </span>
+                <label for="floatCountry">Country</label>
+                <input type="text" class="form-control" data-placeholder="" formControlName="Country">
+            </div>
+
+            <div class="float-container form-group">
+                <span class="text-danger"
+                    *ngIf="customerForm.get('District').errors?.maxlength  && customerForm.get('District').touched">
+                    The district must not exceed 50 characters<br>
+                </span>
+                <label for="floatDistrict">District</label>
+                <input type="text" class="form-control" data-placeholder="" formControlName="District">
+            </div>
+
+            <div class="float-container form-group">
+                <span class="text-danger"
+                    *ngIf="customerForm.get('Locality').errors?.maxlength  && customerForm.get('Locality').touched">
+                    The locality must not exceed 50 characters<br>
+                </span>
+                <label for="floatLocality">Locality</label>
+                <input type="text" class="form-control" data-placeholder="" formControlName="Locality">
+            </div>
+
+            <div class="float-container form-group">
+                <span class="text-danger"
+                    *ngIf="customerForm.get('ZipCode').errors?.pattern  && customerForm.get('ZipCode').touched">
+                    The zip code should be only numeric<br>
+                </span>
+                <label for="floatZipCode">ZipCode</label>
+                <input type="text" class="form-control" data-placeholder="" formControlName="ZipCode">
+            </div>
+
+            <div class="float-container form-group">
+                <span class="text-danger"
+                    *ngIf="customerForm.get('Street').errors?.maxlength  && customerForm.get('Street').touched">
+                    The street must not exceed 255 characters<br>
+                </span>
+                <label for="floatStreet">Street</label>
+                <input type="text" class="form-control" data-placeholder="" formControlName="Street">
+            </div>
+        </div> 
+    </div>
+    <div *ngIf="add"class="col-md-6 offset-md-3">
+        <button type="submit" class="btn btn-light" [disabled]="!customerForm.valid"
+            style="width: 80%; margin-top: 30px;">Add</button>
+    </div>
+    <div *ngIf="!add" class="col-md-6 offset-md-3">
+        <button type="submit" class="btn btn-light" [disabled]="!customerForm.valid"
+            style="width: 80%; margin-top: 30px;">Edit</button>
+    </div>
+
+    <div style="margin-top:30px;"></div>
+</form>

@@ -1,0 +1,43 @@
+/** float container */
+
+.float-container {
+    box-sizing: border-box;
+    margin-bottom: 8px;
+    padding: 0 0px;
+    position: relative;
+    border-radius: 10px;
+    input {
+        font-size: 16px;
+        outline: 0;
+    }
+    label {
+        font-size: 16px;
+        position: absolute;
+        margin-left: 50px;
+        transform-origin: top left;
+        transform: translate(0, 16px) scale(1);
+        transition: all .1s ease-in-out; //speed
+        color: gray;
+        pointer-events: none;
+    }
+    input[type=text],
+    input[type=password],
+    input[type=date] {
+        height: 60px;
+        padding-left: 50px;
+        padding-top: 10px;
+    }
+    .icon {
+        position: absolute;
+        margin: 15px 0px 0px 10px;
+        color: gray;
+        z-index: 1;
+    }
+    /** active label */
+    &.active {
+        label {
+            //move the x coordinate and reduce size
+            transform: translate(0, 4px) scale(.75);
+        }
+    }
+}

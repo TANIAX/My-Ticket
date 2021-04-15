@@ -1,0 +1,16 @@
+
+:host {
+  display: block;
+  overflow: hidden;
+}
+//the width is at 300 % because there are 3 step, so if it would be 2 step it gonna be 200%
+.panes {
+  height: 100%;
+  width: 200%;
+
+  display: flex;
+  div {
+    flex: 1;
+  }
+}
+

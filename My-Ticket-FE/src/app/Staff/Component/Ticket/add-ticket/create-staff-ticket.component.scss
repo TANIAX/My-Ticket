@@ -1,0 +1,45 @@
+.selectMember {
+    width: 100%;
+  }
+  .dropdown-group-member{
+      width: 100%;
+      left: 10px !important;
+  }
+  .dropdownHeader {
+    background-color: #f5f7f9;
+    border-bottom: 1px #cfd7df solid;
+  }
+  .dropdown-search {
+    position: absolute;
+    width: 100%;
+    left: 0px;
+    border-bottom: 1px #cfd7df solid !important;
+  }
+  .dropdown-search-input {
+    border: none !important;
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
+  }
+  textarea:focus,
+input:focus {
+  outline: none;
+}
+.zoom-font-dropdown {
+  font-size: 20px;
+  transition: 0.4s;
+}
+.pull-right{
+    width: 100%;
+}
+.right-absolute{
+    position: absolute;
+    right: 5px;
+}
+.btn-light {
+  display: block;
+  background-color: #f2f2f2;
+  box-shadow: 5px 5px 5px darkgray;
+  width: 80%;
+  margin-top: 30px;
+  margin-bottom: 30px;
+}

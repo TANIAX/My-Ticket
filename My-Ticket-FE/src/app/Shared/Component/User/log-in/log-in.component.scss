@@ -1,0 +1,84 @@
+.roboto{
+    font-family: 'Roboto', sans-serif;
+    font-weight: bold;
+}
+.center{
+    text-align: center;
+}
+//Shake effect if error
+.error {
+    position: relative;
+    animation: shake .1s linear;
+    animation-iteration-count: 3;
+  }
+  
+  @keyframes shake {
+    0% { left: -5px; }
+    100% { right: -5px; }
+  }
+#container{
+  background-color: #fafafa;
+  padding: 20px;
+  border-radius: 20px;
+  margin: auto;
+  margin-bottom: 50px;
+}
+
+
+
+/**/
+/** float container */
+.float-container {
+  box-sizing: border-box;
+  margin-bottom: 8px;
+  padding: 0 8px;
+  position: relative;
+  border-radius: 10px;
+  
+  input {
+    font-size: 16px;
+    outline: 0;
+  }
+
+  label {
+    font-size: 16px;
+    position: absolute;
+    margin-left: 50px;
+    transform-origin: top left;
+    transform: translate(0, 16px) scale(1); 
+    transition: all .1s ease-in-out;  //speed
+    color: gray;
+    pointer-events: none;
+  }
+  input[type=text],input[type=password] {
+    height: 60px;
+    padding-left: 50px;
+    padding-top: 10px;
+  }
+  .icon{
+    position: absolute;
+    margin:15px 0px 0px 10px;
+    color : gray;
+    z-index: 1;
+  }
+  
+  /** active label */
+  &.active {
+    label {
+      //move the x coordinate and reduce size
+      transform: translate(0, 4px) scale(.75);
+    }
+  }
+}
+input[type=checkbox] {
+  margin-left: 10px;
+}
+input[type=submit] {
+  height: 50px;
+}
+@media screen and (min-width: 992px)
+{
+    // #ForgotPasswordLink{
+    //   margin-left: 500px;
+    // }
+}

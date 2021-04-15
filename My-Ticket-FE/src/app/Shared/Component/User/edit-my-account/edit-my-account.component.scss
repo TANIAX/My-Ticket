@@ -1,0 +1,93 @@
+.centerButton {
+    margin: auto;
+}
+
+
+/** float container */
+
+.float-container {
+    box-sizing: border-box;
+    margin-bottom: 8px;
+    padding: 0 0px;
+    position: relative;
+    border-radius: 10px;
+    input {
+        font-size: 16px;
+        outline: 0;
+    }
+    label {
+        font-size: 16px;
+        position: absolute;
+        margin-left: 50px;
+        transform-origin: top left;
+        transform: translate(0, 16px) scale(1);
+        transition: all .1s ease-in-out; //speed
+        color: gray;
+        pointer-events: none;
+    }
+    input[type=text],
+    input[type=password],
+    input[type=date] {
+        height: 60px;
+        padding-left: 50px;
+        padding-top: 10px;
+    }
+    .icon {
+        position: absolute;
+        margin: 15px 0px 0px 10px;
+        color: gray;
+        z-index: 1;
+    }
+    /** active label */
+    &.active {
+        label {
+            //move the x coordinate and reduce size
+            transform: translate(0, 4px) scale(.75);
+        }
+    }
+}
+
+row.no-gutter {
+    margin-left: 0;
+    margin-right: 0;
+}
+
+#PasswordInput {
+    border-top-right-radius: 0px !important;
+    border-bottom-right-radius: 0px !important;
+}
+
+#HideShow {
+    width: 100%;
+    height: 100%;
+    border-radius: 0px 5px 5px 0px;
+    color: white;
+    background-color: rgb(86, 88, 88);
+    border: none;
+}
+
+#HideShowDiv {
+    box-sizing: border-box;
+    margin-bottom: 8px;
+    padding: 0 0px;
+    position: relative;
+    border-radius: 10px;
+}
+
+.table-separation {
+    border-right: 1px solid lightgray;
+}
+
+.mat-form-field {
+    width: 100%;
+}
+
+.mat-paginator-container {
+    justify-content: flex-start !important;
+}
+
+.btn-light {
+    margin-left: 35px;
+    background-color: #f2f2f2;
+    box-shadow: 5px 5px 5px darkgray;
+}

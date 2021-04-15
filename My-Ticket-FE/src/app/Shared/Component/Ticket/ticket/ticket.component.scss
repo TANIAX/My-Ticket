@@ -1,0 +1,135 @@
+.btn-left{
+    border-top-right-radius: 0px !important;
+    border-bottom-right-radius: 0px !important;
+    background-color: #f8f9fa;
+    border: 1px solid lightgray;
+    width: 75px;
+}
+.btn-right{
+    border-top-left-radius: 0px !important;
+    border-bottom-left-radius: 0px !important;
+    background-color: #f8f9fa;
+    border: 1px solid lightgray;
+    border-left: none;
+    width: 75px;
+}
+.ticket-description{
+    background-color: #f8f9fa;
+    border: 1px solid lightgray;
+    border-radius: 10px;
+    margin-top: 20px;
+}
+.ticket-response{
+    background-color: #f8f9fa;
+    border: 1px solid lightgray;
+    border-radius: 10px;
+    margin-top: 20px;
+}
+.ticket-make-response{
+    background-color: #f8f9fa;
+    border: 1px solid lightgray;
+    border-radius: 10px;
+    margin-top: 20px;
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+}
+.arrow-up-make-response {
+    width: 0; 
+    height: 0; 
+    border-left: 15px solid transparent;
+    border-right: 15px solid transparent;
+    
+    border-bottom: 15px solid #f8f9fa;
+
+    position: absolute;
+    margin-top:-10px;
+  }
+  .arrow-up {
+    width: 0; 
+    height: 0; 
+    border-left: 15px solid transparent;
+    border-right: 15px solid transparent;
+    
+    border-bottom: 15px solid #f8f9fa;
+    position: absolute;
+    margin-top:-15px;
+  }
+  .response{
+      margin-top: 30px;
+  }
+  .closed{
+      background-color: lightyellow;
+      padding: 5px;
+      border-radius: 5px;
+      margin-bottom: 10px;
+  }
+  .closed > p {
+      margin-left: 10px;
+      margin-top:5px;
+  }
+  .left-container{
+      border: 1px solid lightgray;
+      border-radius: 10px 0 0 10px;
+      padding: 20px 20px 0 20px;
+      margin-bottom: 20px;
+      min-height: 370px;
+  }
+  .right-container{
+    border-top: 1px solid lightgray;
+    border-right: 1px solid lightgray;
+    border-bottom: 1px solid lightgray;
+    border-radius: 0px 10px 10px 0px;
+    padding: 20px 20px 0 0px;
+    margin-bottom: 20px;
+    min-height: 100%;
+    background-color: #f8f9fa;
+}
+.green-dot{
+    height: 17px;
+    width: 17px;
+    margin-top:5px;
+    background-color: green;
+    border: 1px solid black;
+    margin-right: 20px;
+    border-radius: 50%;
+    display: inline-block;
+    cursor: pointer;
+}
+.red-dot{
+    height: 17px;
+    width: 17px;
+    margin-top:5px;
+    background-color: red;
+    border: 1px solid black;
+    margin-right: 20px;
+    border-radius: 50%;
+    display: inline-block;
+    cursor: pointer;
+}
+.yellow-dot{
+    height: 17px;
+    width: 17px;
+    margin-top:5px;
+    background-color: yellow;
+    border: 1px solid black;
+    margin-right: 20px;
+    border-radius: 50%;
+    display: inline-block;
+    cursor: pointer;
+}
+html{
+    scroll-behavior: smooth;
+}
+.mimic-link{
+    color: #007bff !important;
+    cursor: pointer;
+   
+}
+.mimic-link:hover{
+    text-decoration: underline !important;
+}
+.btn-light {
+    background-color: #f2f2f2;
+    box-shadow: 5px 5px 5px darkgray;
+    margin-top: 30px;
+  }

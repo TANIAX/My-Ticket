@@ -1,0 +1,7 @@
+<h1 mat-dialog-title>Enter a reason</h1>
+<hr>
+<div class="form-group">
+  <label for="Reason">Reason</label>
+  <input type="text" onchange="test()" [(ngModel)]="deleteReason" class="form-control" id="Reason" placeholder="Your reason">
+</div>
+<button type="button" (click)="onValidClick()" mat-button [mat-dialog-close]="" class="btn btn-primary col-md-12">Valid</button>

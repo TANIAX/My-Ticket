@@ -1,0 +1,289 @@
+<h1 (click)="GetFilterInCookie()">Tickets</h1>
+<div id="container">
+    <!-- Action -->
+    <div style="margin-bottom: 10px;" class="row">
+        <div class="col-md-11">
+            <span class="link" (click)="GetTicketList()">Refresh</span>
+            <span style="margin-left: 5px;">in {{timeLeft}} seconds</span>
+        </div>
+        <div class="col-md-1" [ngbTooltip]="'Set timer to -1 if you don\'t want automatic refresh'" [openDelay]="1"
+            [closeDelay]="2000" style="padding: 5px;">
+            <input type="number" min="-1" step="30" max="9999" [(ngModel)]="setTimer" (change)="SetTimerInCookie()"
+                class="timer-control">
+        </div>
+    </div>
+
+    <div *ngIf="SelectedElement.length > 0" class="row justify-content-end"
+        style="margin-bottom: 20px;margin-right: 15px !important;">
+        <button type="button" id="open-button" class="btn btn-light" (click)="OpenButton()"
+            [disabled]="SelectedElement.length != 1">Open</button>
+        <button type="button" id="close-button" class="btn btn-light" (click)="CloseButton()"
+            [disabled]="SelectedElement.length == 0">Close</button>
+        <button type="button" id="assign-to" class="dropdown-toggle btn btn-light" tabindex="0" id="test"
+            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+            [disabled]="SelectedElement.length == 0">Assign to</button>
+        <div style=" max-height: 200px;
+        overflow-y: auto;" class="dropdown-menu" aria-labelledby="test">
+            <p class="dropdown-item" (click)="AssignToButton('me',null)">Assign to me</p>
+            <p *ngFor="let user of User" class="dropdown-item" (click)="AssignToButton('',user)">{{user.LastName}}
+                {{user.FirstName}}</p>
+        </div>
+        <button type="button" id="delete-element" class="btn btn-light" (click)="DeleteButton()"
+            [disabled]="SelectedElement.length == 0">Delete</button>
+    </div>
+
+    <div *ngIf="error" class="alert alert-danger">
+        <p class="text text-danger">{{errorMessage}}</p>
+    </div>
+    <!-- Ticket -->
+    <div *ngFor="let ticket of Ticket | paginate: { itemsPerPage: ItemPerPage, currentPage: p } ; let i = index"
+        class="ticket-body row col-md-12" id="ticket-{{ticket.Id}}"
+        [style.background-color]="i.checked ? 'lightyellow':'' " [ngClass]="{
+            'type-question': ticket.Type.Name == 'Question',
+            'type-incident': ticket.Type.Name == 'Incident',
+            'type-problem': ticket.Type.Name == 'Problem',
+            'type-feature-request': ticket.Type.Name == 'Feature request',
+            'type-refund': ticket.Type.Name == 'Refund'}">
+        <i class="fas fa-envelope unread" *ngIf="ticket.Readed == 2" ></i>
+        <div class="absolute type" [ngbTooltip]="ticket.Type.Name" [openDelay]="500" [closeDelay]="2000"></div>
+        <div class="col-md-2 row">
+            <div class="ticketCheckBox col-md-6">
+                <mat-checkbox #i [(ngModel)]="ticket.checkedOrUnchecked" (change)="!i['checked'];GetElementSelected()">
+                </mat-checkbox>
+            </div>
+            <div class="col-md-6 PP">
+                <img *ngIf="ticket.Email == null; else RequesterNullImg" src="{{ticket.Requester.PP}}" alt=""
+                    style="width: 65px; height: 65px; border-radius: 5px;">
+                <ng-template #RequesterNullImg>
+                    <img src="https://res.cloudinary.com/doifcljfo/image/upload/v1576531184/pnnisxxums62361a8vbt.png"
+                        alt="" style="width: 65px; height: 65px; border-radius: 5px;">
+                </ng-template>
+
+            </div>
+        </div>
+        <!-- Ticket content -->
+        <div class="col-md-8 ticketContent">
+            <span class="row">
+                <ng-template #htmlToolTipContent>
+                    <div [innerHTML]="ticket.Description">
+
+                    </div>
+                </ng-template>
+                <h6 [ngbTooltip]="htmlToolTipContent" [openDelay]="500" [closeDelay]="2000">{{ticket.Title}}</h6>
+                <h6 class="ticketId">#{{ticket.Id}}</h6>
+                <h6> - {{ticket.CreationDate | date:'shortDate'}}</h6>
+                <span>
+                    <!-- Project -->
+                    <div class="col-md-12">
+                        <label class="dropdown-toggle" for="sorting" tabindex="0" id="dropdownProject"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            {{ticket.Project.Name}}
+                        </label>
+                        <div class="dropdown-menu" aria-labelledby="dropdownProject">
+                            <p *ngFor="let project of Project" (click)="PutTicket(ticket,project,'Project')"
+                                class="dropdown-item">{{project.Name}}</p>
+                        </div>
+                    </div>
+                </span>
+            </span>
+            <span class="row" style="margin-top: 20px;">
+                <p *ngIf="ticket.Email == null; else RequesterNull">{{ticket.Requester.LastName}}
+                    {{ticket.Requester.FirstName}}</p>
+                <ng-template #RequesterNull>
+                    <p [ngbTooltip]="CreateCustomer" [openDelay]="500" [closeDelay]="2000">{{ticket.Email}}</p>
+                </ng-template>
+                <ng-template #CreateCustomer>
+                    <p (click)="CustomerCreation(ticket.Email)" style="cursor: pointer;">Click here to create customer
+                    </p>
+                </ng-template>
+                <span class="dot"></span>
+                <p *ngIf="ticket.LastResponseDate != null; else LastResponseDateNull">
+                    {{ticket.LastResponseDate | date:'short'}}</p>
+                <ng-template #LastResponseDateNull>
+                    <p>No response yet</p>
+                </ng-template>
+            </span>
+        </div>
+        <!-- Action -->
+        <div class="col-md-2">
+            <!-- Priority -->
+            <div class="col-md-12">
+                <label class="dropdown-toggle pull-right" for="sorting" tabindex="0" id="dropdownPriority"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <span class="priority-color" [ngClass]="{
+                     'no-color-priority': ticket.Priority.Name == 'Unknow',
+                     'green-priority': ticket.Priority.Name == 'Low',
+                     'yellow-priority': ticket.Priority.Name == 'Mid',
+                     'orangered-priority': ticket.Priority.Name == 'Hight',
+                     'red-priority': ticket.Priority.Name == 'Urgent'}"></span> {{ticket.Priority.Name}}
+                </label>
+                <div class="dropdown-menu" aria-labelledby="dropdownPriority">
+                    <p *ngFor="let priority of Priority" class="dropdown-item"
+                        (click)="PutTicket(ticket,priority,'Priority')">{{priority.Name}}</p>
+                </div>
+            </div>
+            <!-- Member -->
+            <div class="col-md-12">
+                <label class="dropdown-toggle pull-right" for="sorting" tabindex="0" id="dropdownMember"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="margin-left: 9px;">
+                    <span>
+                        <i class="fas fa-user" style="margin-right: 5px;"></i>
+                        <span *ngIf="ticket.Group; else ticketGroupNull">{{ticket.Group.Name}}</span>
+                        <ng-template #ticketGroupNull>
+                            <span>...</span>
+                        </ng-template>
+                        <span> / </span>
+                        <span
+                            *ngIf="ticket.AssignTO?.LastName && ticket.AssignTO?.FirstName; else ticketAssignTONull">{{ticket.AssignTO.LastName}}
+                            {{ticket.AssignTO.FirstName}}</span>
+                        <ng-template #ticketAssignTONull>
+                            <span>...</span>
+                        </ng-template>
+                    </span>
+                </label>
+                <div class="dropdown-menu dropdown-menu-right text-left" aria-labelledby="dropdownMember">
+                    <div class="selectMember container">
+                        <div class="row dropdownHeader">
+                            <div class="col-md-6" (click)="GroupClick($event)">
+                                <span class="row">
+                                    <h6 style="margin-left: 75px;" [ngClass]="{'zoom-font-dropdown':step==1}"
+                                        class="zoom-font-dropdown">GROUP</h6>
+                                    <label *ngIf="ticket.Group ; else ticketGroup" style="margin-left: 60px;"
+                                        [ngClass]="{'zoom-font-dropdown':step==1}">{{ticket.Group.Name}}</label>
+                                    <ng-template #ticketGroup>
+                                        <label style="margin-left: 60px;"
+                                            [ngClass]="{'zoom-font-dropdown':step==2}">Unassigned</label>
+                                    </ng-template>
+                                </span>
+
+                            </div>
+                            <div class="col-md-6" (click)="MemberClick($event)">
+                                <span class="row">
+                                    <h6 style="margin-left: 75px;" [ngClass]="{'zoom-font-dropdown':step==2}">MEMBER
+                                    </h6>
+                                    <label
+                                        *ngIf="ticket.AssignTO?.LastName && ticket.AssignTO?.FirstName ; else ticketAssignTO"
+                                        style="margin-left: 60px;"
+                                        [ngClass]="{'zoom-font-dropdown':step==2}">{{ticket.AssignTO.LastName}}
+                                        {{ticket.AssignTO.FirstName}}</label>
+                                    <ng-template #ticketAssignTO>
+                                        <label style="margin-left: 60px;"
+                                            [ngClass]="{'zoom-font-dropdown':step==2}">Unassigned</label>
+                                    </ng-template>
+
+                                </span>
+                            </div>
+                        </div>
+                        <!-- Search -->
+                        <div class="row">
+                            <div class="input-group dropdown-search">
+                                <input (click)="Search($event)" [(ngModel)]="FilteredGroupOrMember"
+                                    class="py-2 dropdown-search-input col-md-11" type="search" placeholder="search"
+                                    id="example-search-input">
+                                <span class="input-group-append">
+                                    <button (click)="ButtonSearch($event)" class=".dropdown-search-input-button"
+                                        type="button" style="background: none;
+                                            color: inherit;
+                                            border: none;
+                                            font: inherit;
+                                            outline: inherit;">
+                                        <i class="fa fa-search"></i>
+                                    </button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <app-Swipe [activePane]="step == 1 ? 1 : step == 2 ? 2  : step > 2 ? 1 : 1"
+                        style="margin-top: 50px;">
+                        <!-- Step 1 -->
+                        <div Step1 style="max-height: 200px;
+                        overflow-y: auto;">
+                            <a *ngFor="let group of Group | filter:FilteredGroupOrMember:['Name']"
+                                (click)="PutTicket(ticket,group,'Group')" class="dropdown-item">{{group.Name}}
+                                ({{group.NumberOfMember}})</a>
+                        </div>
+                        <div Step2>
+                            <a *ngFor="let user of User | filter:FilteredGroupOrMember:['LastName','FirstName']"
+                                (click)="PutTicket(ticket,user,'AssignTO')" class="dropdown-item">{{user.LastName}}
+                                {{user.FirstName}}</a>
+                        </div>
+                    </app-Swipe>
+                    <!-- TODO NGFOR GROUPS OR MEMBER-->
+
+                </div>
+            </div>
+            <!-- Status -->
+            <div class="col-md-12">
+                <label style="margin-left: 26px;" class="dropdown-toggle pull-right" for="sorting" tabindex="0"
+                    id="dropdownStatus" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fab fa-stumbleupon" style="margin-right: 5px;"></i>{{ticket.Status.Name}}
+                </label>
+                <div class="dropdown-menu" aria-labelledby="dropdownStatus">
+                    <p *ngFor="let status of Status" (click)="PutTicket(ticket,status,'Status')" class="dropdown-item">
+                        {{status.Name}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <input type="number" min="1" max="100" id="item-per-page-control" value="10" class="item-per-page-control"
+            (change)="ChangeItemPerPage()">
+        <pagination-controls (pageChange)="p = $event" style="margin-left: -30px;"></pagination-controls>
+    </div>
+</div>
+<!-- FilterPanel -->
+<div id="filter-panel-button" (click)="FilterPanelCollapse()" *ngIf="Ticket">
+    <span class="col-md-12">
+        <i class="fas fa-long-arrow-alt-left" style="border-right : 2px solid black"></i>
+    </span>
+    <br>
+    <span class="col-md-12">
+        <i class="fas fa-long-arrow-alt-right" style="border-left : 2px solid black"></i>
+    </span>
+</div>
+<!-- Filter control -->
+<div id="filter-panel" class="filter-panel">
+    <form [formGroup]="filterForm" (ngSubmit)="filterFormSubmit()">
+        <h4 class="filter-panel-title" style="margin-top:-40px !important;">Filter</h4>
+        <h5 class="filter-panel-title">Member</h5>
+        <select formControlName="AssignTO" class="form-control filter-panel-input" name="AssignTOfilter">
+            <option selected value> --- </option>
+            <option *ngFor="let user of User" value="{{user.Id}}">{{user.LastName}} {{user.FirstName}}</option>
+        </select>
+        <h5 class="filter-panel-title">Group</h5>
+        <select formControlName="Group" class="form-control filter-panel-input" name="GroupFilter">
+            <option selected value> --- </option>
+            <option *ngFor="let group of Group" value="{{group.Id}}">{{group.Name}}</option>
+        </select>
+        <h5 class="filter-panel-title">Creation Date</h5>
+        <select formControlName="CreationDate" class="form-control filter-panel-input" name="CreationDateFilter">
+            <option selected value> --- </option>
+            <option value="-1">Today</option>
+            <option value="1">Yesterday</option>
+            <option value="7">This week</option>
+            <option value="30">This month</option>
+        </select>
+        <h5 class="filter-panel-title">Priority</h5>
+        <select formControlName="Priority" class="form-control filter-panel-input" name="PriorityFilter">
+            <option selected value> --- </option>
+            <option *ngFor="let priority of Priority" value="{{priority.Id}}">{{priority.Name}}</option>
+        </select>
+        <h5 class="filter-panel-title">Type</h5>
+        <select formControlName="Type" class="form-control filter-panel-input" name="TypeFilter">
+            <option selected value> --- </option>
+            <option *ngFor="let type of Type" value="{{type.Id}}">{{type.Name}}</option>
+        </select>
+        <h5 class="filter-panel-title">Project</h5>
+        <select formControlName="Project" class="form-control filter-panel-input" name="ProjectFilter">
+            <option selected value> --- </option>
+            <option *ngFor="let project of Project" value="{{project.Id}}">{{project.Name}}</option>
+        </select>
+        <h5 class="filter-panel-title">Status</h5>
+        <select formControlName="Status" class="form-control filter-panel-input" name="StatusFilter">
+            <option selected value> --- </option>
+            <option *ngFor="let status of Status" value="{{status.Id}}">{{status.Name}}</option>
+            <option value="-1"> Not closed </option>
+        </select>
+        <button class="btn btn-primary filter-panel-input" style="margin-top: 20px;">Apply filter</button>
+    </form>
+</div>

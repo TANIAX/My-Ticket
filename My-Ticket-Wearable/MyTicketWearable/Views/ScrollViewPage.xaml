@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="MyTicketWearable.Views.ScrollViewPage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+    <ContentPage.Content>
+        <ScrollView Orientation="Vertical">
+            <StackLayout
+                Orientation="Vertical"
+                HorizontalOptions="FillAndExpand"
+                VerticalOptions="FillAndExpand">
+                <StackLayout
+                    VerticalOptions="StartAndExpand" Padding="0,80,0,0" BackgroundColor="#21D192">
+                    <Label x:Name="Title"
+                       BackgroundColor="#21D192"
+                       FontFamily="Roboto"
+                       FontSize="Title"
+                       FontAttributes="Bold"
+                       HorizontalOptions="FillAndExpand" 
+                       HorizontalTextAlignment="Center" 
+                       VerticalTextAlignment="Center" 
+                       />
+                </StackLayout>
+                <Label x:Name="Description"
+                       FontFamily="Roboto"
+                       Margin="30,50,0,0"
+                       />
+                <StackLayout VerticalOptions="StartAndExpand" Padding="0,80,0,0" />
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>
